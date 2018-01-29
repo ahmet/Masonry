@@ -11,7 +11,7 @@ For examples take a look at the **Masonry iOS Examples** project in the Masonry 
 
 Under the hood Auto Layout is a powerful and flexible way of organising and laying out your views. However creating constraints from code is verbose and not very descriptive.
 Imagine a simple example in which you want to have a view fill its superview but inset by 10 pixels on every side
-```obj-c
+```objective-c
 UIView *superview = self.view;
 
 UIView *view1 = [[UIView alloc] init];
@@ -66,7 +66,7 @@ However the ASCII type syntax has its own pitfalls and its also a bit harder to 
 
 Heres the same constraints created using MASConstraintMaker
 
-```obj-c
+```objective-c
 UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
 
 [view1 mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -78,7 +78,7 @@ UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
 ```
 Or even shorter
 
-```obj-c
+```objc
 [view1 mas_makeConstraints:^(MASConstraintMaker *make) {
     make.edges.equalTo(superview).with.insets(padding);
 }];
@@ -101,28 +101,28 @@ These three equality constraints accept one argument which can be any of the fol
 
 #### 1. MASViewAttribute
 
-```obj-c
+```objc
 make.centerX.lessThanOrEqualTo(view2.mas_left);
 ```
 
-MASViewAttribute           |  NSLayoutAttribute
--------------------------  |  --------------------------
-view.mas_left              |  NSLayoutAttributeLeft
-view.mas_right             |  NSLayoutAttributeRight
-view.mas_top               |  NSLayoutAttributeTop
-view.mas_bottom            |  NSLayoutAttributeBottom
-view.mas_leading           |  NSLayoutAttributeLeading
-view.mas_trailing          |  NSLayoutAttributeTrailing
-view.mas_width             |  NSLayoutAttributeWidth
-view.mas_height            |  NSLayoutAttributeHeight
-view.mas_centerX           |  NSLayoutAttributeCenterX
-view.mas_centerY           |  NSLayoutAttributeCenterY
-view.mas_baseline          |  NSLayoutAttributeBaseline
+| MASViewAttribute  | NSLayoutAttribute         |
+| ----------------- | ------------------------- |
+| view.mas_left     | NSLayoutAttributeLeft     |
+| view.mas_right    | NSLayoutAttributeRight    |
+| view.mas_top      | NSLayoutAttributeTop      |
+| view.mas_bottom   | NSLayoutAttributeBottom   |
+| view.mas_leading  | NSLayoutAttributeLeading  |
+| view.mas_trailing | NSLayoutAttributeTrailing |
+| view.mas_width    | NSLayoutAttributeWidth    |
+| view.mas_height   | NSLayoutAttributeHeight   |
+| view.mas_centerX  | NSLayoutAttributeCenterX  |
+| view.mas_centerY  | NSLayoutAttributeCenterY  |
+| view.mas_baseline | NSLayoutAttributeBaseline |
 
 #### 2. UIView/NSView
 
 if you want view.left to be greater than or equal to label.left :
-```obj-c
+```objc
 //these two constraints are exactly the same
 make.left.greaterThanOrEqualTo(label);
 make.left.greaterThanOrEqualTo(label.mas_left);
@@ -132,7 +132,7 @@ make.left.greaterThanOrEqualTo(label.mas_left);
 
 Auto Layout allows width and height to be set to constant values.
 if you want to set view to have a minimum and maximum width you could pass a number to the equality blocks:
-```obj-c
+```objc
 //width >= 200 && width <= 400
 make.width.greaterThanOrEqualTo(@200);
 make.width.lessThanOrEqualTo(@400)
@@ -140,13 +140,13 @@ make.width.lessThanOrEqualTo(@400)
 
 However Auto Layout does not allow alignment attributes such as left, right, centerY etc to be set to constant values.
 So if you pass a NSNumber for these attributes Masonry will turn these into constraints relative to the view&rsquo;s superview ie:
-```obj-c
+```objc
 //creates view.left = view.superview.left + 10
 make.left.lessThanOrEqualTo(@10)
 ```
 
 Instead of using NSNumber, you can use primitives and structs to build your constraints, like so:
-```obj-c
+```objc
 make.top.mas_equalTo(42);
 make.height.mas_equalTo(20);
 make.size.mas_equalTo(CGSizeMake(50, 100));
@@ -159,11 +159,11 @@ By default, macros which support [autoboxing](https://en.wikipedia.org/wiki/Auto
 #### 4. NSArray
 
 An array of a mixture of any of the previous types
-```obj-c
+```objc
 make.height.equalTo(@[view1.mas_height, view2.mas_height]);
 make.height.equalTo(@[view1, view2]);
 make.left.equalTo(@[view1, @100, view3.right]);
-````
+​````
 
 ## Learn to prioritize
 
@@ -176,7 +176,7 @@ make.left.equalTo(@[view1, @100, view3.right]);
 > `.priorityLow` equivalent to **UILayoutPriorityDefaultLow**
 
 Priorities are can be tacked on to the end of a constraint chain like so:
-```obj-c
+​```objc
 make.left.greaterThanOrEqualTo(label.mas_left).with.priorityLow();
 
 make.top.equalTo(label.mas_top).with.priority(600);
@@ -188,7 +188,7 @@ Masonry also gives you a few convenience methods which create multiple constrain
 
 #### edges
 
-```obj-c
+```objc
 // make top, left, bottom, right equal view2
 make.edges.equalTo(view2);
 
@@ -199,7 +199,7 @@ make.edges.equalTo(superview).insets(UIEdgeInsetsMake(5, 10, 15, 20))
 
 #### size
 
-```obj-c
+```objc
 // make width and height greater than or equal to titleLabel
 make.size.greaterThanOrEqualTo(titleLabel)
 
@@ -208,7 +208,7 @@ make.size.equalTo(superview).sizeOffset(CGSizeMake(100, -50))
 ```
 
 #### center
-```obj-c
+```objc
 // make centerX and centerY = button1
 make.center.equalTo(button1)
 
@@ -218,7 +218,7 @@ make.center.equalTo(superview).centerOffset(CGPointMake(-5, 10))
 
 You can chain view attributes for increased readability:
 
-```obj-c
+```objc
 // All edges but the top should equal those of the superview
 make.left.right.and.bottom.equalTo(superview);
 make.top.equalTo(otherView);
@@ -233,7 +233,7 @@ In Masonry there are a few different approaches to updating constraints.
 You can hold on to a reference of a particular constraint by assigning the result of a constraint make expression to a local variable or a class property.
 You could also reference multiple constraints by storing them away in an array.
 
-```obj-c
+```objc
 // in public/private interface
 @property (nonatomic, strong) MASConstraint *topConstraint;
 
@@ -253,7 +253,7 @@ You could also reference multiple constraints by storing them away in an array.
 #### 2. mas_updateConstraints
 Alternatively if you are only updating the constant value of the constraint you can use the convience method `mas_updateConstraints` instead of `mas_makeConstraints`
 
-```obj-c
+```objc
 // this is Apple's recommended place for adding/updating constraints
 // this method can get called multiple times in response to setNeedsUpdateConstraints
 // which can be called by UIKit internally or in your code if you need to trigger an update to your constraints
@@ -276,7 +276,7 @@ Alternatively if you are only updating the constant value of the constraint you 
 
 `mas_remakeConstraints` is similar to `mas_updateConstraints`, but instead of updating constant values, it will remove all of its constraints before installing them again. This lets you provide different constraints without having to keep around references to ones which you want to remove.
 
-```obj-c
+```objc
 - (void)changeButtonPosition {
     [self.button mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.size.equalTo(self.buttonSize);
@@ -296,7 +296,7 @@ You can find more detailed examples of all three approaches in the **Masonry iOS
 
 Laying out your views doesn't always goto plan. So when things literally go pear shaped, you don't want to be looking at console output like this:
 
-```obj-c
+```objc
 Unable to simultaneously satisfy constraints.....blah blah blah....
 (
     "<NSLayoutConstraint:0x7189ac0 V:[UILabel:0x7186980(>=5000)]>",
@@ -314,7 +314,7 @@ Now you can give meaningful names to views and constraints, and also easily pick
 
 which means your console output can now look like this:
 
-```obj-c
+```objc
 Unable to simultaneously satisfy constraints......blah blah blah....
 (
     "<NSAutoresizingMaskLayoutConstraint:0x8887740 MASExampleDebuggingView:superview.height == 416>",
@@ -357,7 +357,7 @@ For an example of how to set this up take a look at the **Masonry iOS Examples**
         make.width.equalTo(@(self.buttonSize.width));
         make.height.equalTo(@(self.buttonSize.height));
     }];
-    
+
     //according to apple super should be called at end of method
     [super updateConstraints];
 }
@@ -412,4 +412,3 @@ Copy the included code snippets to ``~/Library/Developer/Xcode/UserData/CodeSnip
 * Eye candy
 * Mac example project
 * More tests and examples
-
