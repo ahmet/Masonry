@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 
 
-
-#if TARGET_OS_IPHONE || TARGET_OS_TV
+#if TARGET_OS_IPHONE || TARGET_OS_TV    // target为iPhone或者Apple TV
 
     #import <UIKit/UIKit.h>
     #define MAS_VIEW UIView
@@ -18,32 +17,33 @@
     #define MASEdgeInsets UIEdgeInsets
 
     typedef UILayoutPriority MASLayoutPriority;
-    static const MASLayoutPriority MASLayoutPriorityRequired = UILayoutPriorityRequired;
-    static const MASLayoutPriority MASLayoutPriorityDefaultHigh = UILayoutPriorityDefaultHigh;
+    static const MASLayoutPriority MASLayoutPriorityRequired = UILayoutPriorityRequired;    // 优先级1000
+    static const MASLayoutPriority MASLayoutPriorityDefaultHigh = UILayoutPriorityDefaultHigh;  // 优先级750
     static const MASLayoutPriority MASLayoutPriorityDefaultMedium = 500;
-    static const MASLayoutPriority MASLayoutPriorityDefaultLow = UILayoutPriorityDefaultLow;
-    static const MASLayoutPriority MASLayoutPriorityFittingSizeLevel = UILayoutPriorityFittingSizeLevel;
+    static const MASLayoutPriority MASLayoutPriorityDefaultLow = UILayoutPriorityDefaultLow;    // 优先级250
+    static const MASLayoutPriority MASLayoutPriorityFittingSizeLevel = UILayoutPriorityFittingSizeLevel;    // 优先级50
 
-#elif TARGET_OS_MAC
+#elif TARGET_OS_MAC     // target为MAC
 
     #import <AppKit/AppKit.h>
     #define MAS_VIEW NSView
     #define MASEdgeInsets NSEdgeInsets
 
     typedef NSLayoutPriority MASLayoutPriority;
-    static const MASLayoutPriority MASLayoutPriorityRequired = NSLayoutPriorityRequired;
-    static const MASLayoutPriority MASLayoutPriorityDefaultHigh = NSLayoutPriorityDefaultHigh;
-    static const MASLayoutPriority MASLayoutPriorityDragThatCanResizeWindow = NSLayoutPriorityDragThatCanResizeWindow;
+    static const MASLayoutPriority MASLayoutPriorityRequired = NSLayoutPriorityRequired;    // 优先级1000
+    static const MASLayoutPriority MASLayoutPriorityDefaultHigh = NSLayoutPriorityDefaultHigh;  // 优先级750
+    static const MASLayoutPriority MASLayoutPriorityDragThatCanResizeWindow = NSLayoutPriorityDragThatCanResizeWindow;  // 优先级510
     static const MASLayoutPriority MASLayoutPriorityDefaultMedium = 501;
-    static const MASLayoutPriority MASLayoutPriorityWindowSizeStayPut = NSLayoutPriorityWindowSizeStayPut;
-    static const MASLayoutPriority MASLayoutPriorityDragThatCannotResizeWindow = NSLayoutPriorityDragThatCannotResizeWindow;
-    static const MASLayoutPriority MASLayoutPriorityDefaultLow = NSLayoutPriorityDefaultLow;
-    static const MASLayoutPriority MASLayoutPriorityFittingSizeCompression = NSLayoutPriorityFittingSizeCompression;
+    static const MASLayoutPriority MASLayoutPriorityWindowSizeStayPut = NSLayoutPriorityWindowSizeStayPut;  // 优先级500
+    static const MASLayoutPriority MASLayoutPriorityDragThatCannotResizeWindow = NSLayoutPriorityDragThatCannotResizeWindow; // 优先级490
+    static const MASLayoutPriority MASLayoutPriorityDefaultLow = NSLayoutPriorityDefaultLow;    // 优先级250
+    static const MASLayoutPriority MASLayoutPriorityFittingSizeCompression = NSLayoutPriorityFittingSizeCompression;    // 优先级50
 
 #endif
 
 /**
  *	Allows you to attach keys to objects matching the variable names passed.
+ *  允许你绑定key到一个通过变量名匹配的对象,用于debug时候在console里标记对应视图,否则对应的视图都是以内存地址的方式打印的
  *
  *  view1.mas_key = @"view1", view2.mas_key = @"view2";
  *
@@ -61,9 +61,11 @@
             [obj setMas_key:key];                                                 \
         }                                                                         \
     }
-
 /**
  *  Used to create object hashes
+ *  用于实现-isEqual:和-hash方法时,对于当前类每个属性的哈希值进行组装时使用,为了让组装各自属性哈希值时是不对称的。
+ *  如果将各自属性的哈希值简单的相加或者异或,容易造成两个对象本来不相等,但是hash值是相同的。
+ *  详细内容可以看一下下面blog中“Combining Property Hashes”一节的描述
  *  Based on http://www.mikeash.com/pyblog/friday-qa-2010-06-18-implementing-equality-and-hashing.html
  */
 #define MAS_NSUINT_BIT (CHAR_BIT * sizeof(NSUInteger))
@@ -71,7 +73,12 @@
 
 /**
  *  Given a scalar or struct value, wraps it in NSValue
+ *  将基本类型的值和结构体类型的值，打包成NSValue对象类型
  *  Based on EXPObjectify: https://github.com/specta/expecta
+ *  由于变参函数的规定，会对参数表中的匿名参数做默认类型提升，规则如下：
+ *      short、char、bool、c99中的_Bool、BOOL实际是对bool的typedef，这几种类型值统一被提升为int类型
+ *      unsigned short、unsigned char、同样被提升为了unsigned int类型
+ *      其他类型按照对应类型存储，编译器应该是可以按照值来区分大致类型，比如：浮点型，整形，结构体
  */
 static inline id _MASBoxValue(const char *type, ...) {
     va_list v;
