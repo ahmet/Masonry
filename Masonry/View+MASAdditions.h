@@ -82,6 +82,12 @@
  *
  *  @return Array of created MASConstraints
  */
+/**
+ NS_NOESCAPE: 作用是告诉编译器，block参数在mas_makeConstraints方法返回之前就会执行完毕，而不是被保存起来在之后的某个时候再执行
+            编译器知道之后，就会相应的做一些优化，例如去掉一些多余的对self的捕获、retain、release操作。因为block的存活范围仅限
+            与本方法内，没有必要再在block内保留self了。
+ 详情内容参考：https://github.com/apple/swift-evolution/blob/master/proposals/0012-add-noescape-to-public-library-api.md
+ */
 - (NSArray *)mas_makeConstraints:(void(NS_NOESCAPE ^)(MASConstraintMaker *make))block;
 
 /**
