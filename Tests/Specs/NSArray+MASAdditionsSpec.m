@@ -8,6 +8,7 @@
 #import "NSArray+MASAdditions.h"
 #import "MASViewConstraint.h"
 
+// 已跑过test
 SpecBegin(NSArray_MASAdditions)
 
 - (void)testShouldFailWhenArrayContainsNonViews {

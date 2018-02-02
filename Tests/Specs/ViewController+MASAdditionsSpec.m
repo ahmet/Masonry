@@ -22,7 +22,9 @@ SpecBegin(ViewController_MASAdditions)
         make.top.equalTo(vc.mas_topLayoutGuide);
         make.bottom.equalTo(vc.mas_bottomLayoutGuide);
     }];
-    
+    // 这里为什么会是6个约束?
+    // 因为约束vc的topLayoutGuide的时候首先默认为vc创建topLayoutGuide并进行top和height的约束
+    // 然后，再约束view对于topLayout的bottom的约束
     expect(vc.view.constraints).to.haveCountOf(6);
 #endif
 }

@@ -7,7 +7,7 @@
 //
 
 #import "MASViewAttribute.h"
-
+// 已跑过
 SpecBegin(MASViewAttributeSpec){
     MAS_VIEW *view;
     MASViewAttribute *viewAttribute;

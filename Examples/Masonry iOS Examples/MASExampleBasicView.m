@@ -48,7 +48,7 @@
         make.height.equalTo(blueView.height);
         
     }];
-
+    
     //with is semantic and option
     [redView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(superview.mas_top).with.offset(padding); //with with

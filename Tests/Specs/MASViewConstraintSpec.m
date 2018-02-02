@@ -12,7 +12,7 @@
 #import "View+MASAdditions.h"
 #import "MASConstraintDelegateMock.h"
 #import "MASCompositeConstraint.h"
-
+// 已跑过
 @interface MASViewConstraint ()
 
 @property (nonatomic, weak) MASLayoutConstraint *layoutConstraint;
@@ -82,7 +82,7 @@ SpecBegin(MASViewConstraint) {
 - (void)testRelationNotAllowUpdateOfEqual {
     MASViewAttribute *secondViewAttribute = otherView.mas_top;
     constraint.lessThanOrEqualTo(secondViewAttribute);
-
+    // 同一个链式表达式，返回的是相同的MASViewAttribute实例，而同一个MASViewAttribute实例只能设置一次相等关系
     expect(^{
         constraint.equalTo(secondViewAttribute);
     }).to.raise(@"NSInternalInconsistencyException");
@@ -109,6 +109,8 @@ SpecBegin(MASViewConstraint) {
 
 - (void)testRelationAcceptsView {
     MAS_VIEW *view = MAS_VIEW.new;
+    // 如果equalTo传入的是一个MAS_VIEW类型，则内部自动创建secondViewAttribute，并且对于layoutAttribute的设置
+    // 与firstViewAttribute一致
     constraint.equalTo(view);
 
     expect(constraint.secondViewAttribute.view).to.beIdenticalTo(view);
@@ -153,6 +155,7 @@ SpecBegin(MASViewConstraint) {
     
     MASViewConstraint *centerX = [[MASViewConstraint alloc] initWithFirstViewAttribute:otherView.mas_centerX];
     centerX.equalTo(value);
+    // 这里为0的原因是MASViewConstraint的属性取决于初始值
     expect(centerX.layoutConstant).to.equal(0);
 }
 
@@ -317,7 +320,7 @@ SpecBegin(MASViewConstraint) {
 
 - (void)testMultiplierNotUpdate {
     [constraint install];
-
+    // 被装载之后的constraint的乘数因子不能被修改
     expect(^{
         constraint.multipliedBy(0.9);
     }).to.raise(@"NSInternalInconsistencyException");

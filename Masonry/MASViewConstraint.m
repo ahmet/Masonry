@@ -14,7 +14,7 @@
 #import <objc/runtime.h>
 
 @interface MAS_VIEW (MASConstraints)
-
+// 保存所有已装载到当前view的所有约束
 @property (nonatomic, readonly) NSMutableSet *mas_installedConstraints;
 
 @end
@@ -102,6 +102,9 @@ static char kInstalledConstraintsKey;
     self.hasLayoutRelation = YES;
 }
 
+/**
+    是否支持-isActive来控制开关约束
+ */
 - (BOOL)supportsActiveProperty {
     return [self.layoutConstraint respondsToSelector:@selector(isActive)];
 }

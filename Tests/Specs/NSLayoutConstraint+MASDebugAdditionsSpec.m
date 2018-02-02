@@ -11,7 +11,7 @@
 #import "MASLayoutConstraint.h"
 #import "MASCompositeConstraint.h"
 #import "MASViewConstraint.h"
-
+// 已跑过
 SpecBegin(NSLayoutConstraint_MASDebugAdditions)
 
 - (void)testDisplayViewKey {

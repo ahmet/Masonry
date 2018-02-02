@@ -7,7 +7,7 @@
 //
 
 #import "View+MASAdditions.h"
-
+// 已跑过
 SpecBegin(View_MASAdditions)
 
 - (void)testSetTranslatesAutoresizingMaskIntoConstraints {

@@ -11,6 +11,7 @@
 #import "MASViewConstraint.h"
 #import "MASConstraint+Private.h"
 
+// 已跑过
 @interface MASConstraintMaker () <MASConstraintDelegate>
 
 @property (nonatomic, weak) MAS_VIEW *view;
@@ -82,6 +83,7 @@ SpecBegin(MASConstraintMaker) {
 - (void)testCreateAllEdges {
     MAS_VIEW *newView = MAS_VIEW.new;
     composite = (MASCompositeConstraint *)maker.edges;
+    // 这里设置secondView是多余的,因为接下来根本就没有对secondView做任何test
     composite.equalTo(newView);
 
     expect(composite.childConstraints).to.haveCountOf(4);
@@ -149,7 +151,7 @@ SpecBegin(MASConstraintMaker) {
     expect(superview.constraints).to.haveCountOf(1);
     NSLayoutConstraint *constraint2 = superview.constraints[0];
     expect(constraint2.constant).to.equal(20);
-
+    // 这句测试没有任何意义啊，必然是passed
     expect(constraint2).to.beIdenticalTo(constraint2);
 }
 
@@ -196,6 +198,7 @@ SpecBegin(MASConstraintMaker) {
 }
 
 - (void)testCreateNewViewAttributes {
+    // 这里的beIdenticalTo指的是两个对象的地址必须一样
     expect(maker.left).notTo.beIdenticalTo(maker.left);
     expect(maker.right).notTo.beIdenticalTo(maker.right);
     expect(maker.top).notTo.beIdenticalTo(maker.top);
