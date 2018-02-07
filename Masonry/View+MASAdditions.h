@@ -14,10 +14,16 @@
  *	Provides constraint maker block
  *  and convience methods for creating MASViewAttribute which are view + NSLayoutAttribute pairs
  */
+/**
+    提供约束maker block块和创建MASViewAttribute的便捷方法
+ */
 @interface MAS_VIEW (MASAdditions)
 
 /**
  *	following properties return a new MASViewAttribute with current view and appropriate NSLayoutAttribute
+ */
+/**
+    下面的属性返回一个新的MASViewAttribute，用当前view和适当的NSLayoutAttribute
  */
 @property (nonatomic, strong, readonly) MASViewAttribute *mas_left;
 @property (nonatomic, strong, readonly) MASViewAttribute *mas_top;
@@ -72,6 +78,10 @@
  *
  *	@return	returns nil if common superview could not be found
  */
+/**
+    查找当前视图和参数中输入的视图之间最近的公共父视图
+    如果找不到就返回nil
+ */
 - (instancetype)mas_closestCommonSuperview:(MAS_VIEW *)view;
 
 /**
@@ -99,6 +109,11 @@
  *
  *  @return Array of created/updated MASConstraints
  */
+/**
+    用被调用的view创建一个MASConstraintMaker.
+    一旦block执行结束，所有block内设置的约束值会被添加到这个被调用的view上，或者适当的父view上.
+    如果一个约束已经存在，那么它会被更新后的约束代替.
+ */
 - (NSArray *)mas_updateConstraints:(void(NS_NOESCAPE ^)(MASConstraintMaker *make))block;
 
 /**
@@ -109,6 +124,11 @@
  *  @param block scope within which you can build up the constraints which you wish to apply to the view.
  *
  *  @return Array of created/updated MASConstraints
+ */
+/**
+    创建一个MASConstraintMaker用被调用的view.
+    一旦block执行结束，所有block内设置的约束值会被添加到这个被调用的view上，或者适当的父view上.
+    所有预先被装载的约束会被移除，然后重新按照block内的约束代替.
  */
 - (NSArray *)mas_remakeConstraints:(void(NS_NOESCAPE ^)(MASConstraintMaker *make))block;
 
