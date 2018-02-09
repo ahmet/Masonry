@@ -25,6 +25,10 @@ typedef NS_ENUM(NSUInteger, MASAxisType) {
  *
  *  @return Array of created MASConstraints
  */
+/**
+    为每一个数组中的view，创建一个MASConstraintMaker.
+    一旦这个block执行完毕，任何被定义的约束都会被添加到这个数组中被调用的view或者被调用的view的superview上
+ */
 - (NSArray *)mas_makeConstraints:(void (NS_NOESCAPE ^)(MASConstraintMaker *make))block;
 
 /**

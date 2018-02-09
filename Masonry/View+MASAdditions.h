@@ -52,6 +52,9 @@
 @property (nonatomic, strong, readonly) MASViewAttribute *mas_centerXWithinMargins;
 @property (nonatomic, strong, readonly) MASViewAttribute *mas_centerYWithinMargins;
 
+/**
+ 以下属性只用于second view，因为如果用于first view的话，无法调用make、remake、update方法
+ */
 @property (nonatomic, strong, readonly) MASViewAttribute *mas_safeAreaLayoutGuide NS_AVAILABLE_IOS(11.0);
 @property (nonatomic, strong, readonly) MASViewAttribute *mas_safeAreaLayoutGuideLeading NS_AVAILABLE_IOS(11.0);
 @property (nonatomic, strong, readonly) MASViewAttribute *mas_safeAreaLayoutGuideTrailing NS_AVAILABLE_IOS(11.0);
